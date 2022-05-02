@@ -1,0 +1,72 @@
+service: developer-test-api
+frameworkVersion: '3'
+
+useDotenv: true
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-plugin-split-stacks
+  - serverless-prune-plugin
+  - serverless-domain-manager
+
+custom:
+  serverless-offline:
+    port: 3080
+  dnsEnabled:
+    prod: true
+    develop: true
+    staging: true
+  packageIndividually:
+    prod: false
+    develop: false
+    staging: false
+
+provider:
+  name: aws
+  versionFunctions: false
+  runtime: nodejs14.x
+  region: us-east-1
+  timeout: 30
+  memorySize: 512
+  environment:
+    AWS_RDS_HOST: ${env:AWS_RDS_HOST}
+    AWS_RDS_USER: ${env:AWS_RDS_USER}
+    AWS_RDS_PASSWORD: ${env:AWS_RDS_PASSWORD}
+    AWS_RDS_DATABASE: ${env:AWS_RDS_DATABASE}
+
+package:
+  individually: false
+
+functions:
+  userFunc:
+    handler: src/handlers/users.handler
+    events:
+      - http:
+          path: v1/user
+          method: get
+          cors: true
+      - http:
+          path: v1/user/{userID}
+          method: get
+          cors: true
+          request:
+            parameters:
+              paths:
+                userID: true
+      - http:
+          path: v1/user/{userID}/details
+          method: get
+          cors: true
+          request:
+            parameters:
+              paths:
+                userID: true
+      - http:
+          path: v1/user/{userID}
+          method: put
+          cors: true
+          request:
+            parameters:
+              paths:
+                userID: true

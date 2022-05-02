@@ -1,0 +1,9 @@
+*.log
+.idea
+.env
+.serverless
+.webpack
+node_modules
+dist
+.vscode/*settings*
+.eslintrc
