@@ -1,3 +1,5 @@
+# @format
+
 service: developer-test-api
 frameworkVersion: '3'
 
@@ -65,6 +67,14 @@ functions:
       - http:
           path: v1/user/{userID}
           method: put
+          cors: true
+          request:
+            parameters:
+              paths:
+                userID: true
+      - http:
+          path: v1/user/{userID}
+          method: delete
           cors: true
           request:
             parameters:
